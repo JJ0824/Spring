@@ -1,12 +1,21 @@
 package com.dw.secondapp.controller;
 
+import com.dw.secondapp.service.CallPiService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class CallPi {
-    @GetMapping("/callpi")
+    @Autowired
+    CallPiService callPiService;
+
+    @GetMapping("/pi")
     public String Pi() {
-        return (" "+Math.PI);
+        if (callPiService.Pi()==null) {
+            return " "+Pi();
+        } else {
+            return callPiService.Pi();
+        }
     }
 }
