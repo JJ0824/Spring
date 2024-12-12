@@ -10,6 +10,10 @@ public class ServicePractice {
     RepositoryPractice repositoryPractice;
 
     public String practice() {
-        return repositoryPractice.practice();
+        if(repositoryPractice==null) {
+            return "Service : 연습";
+        } else {
+            return repositoryPractice.practice();
+        }
     }
 }
