@@ -15,4 +15,12 @@ public class CustomerService {
     public List<Customer> getAllCustomers() {
         return customerRepository.getAllCustomers();
     }
+
+    public Customer getCustomerByCustomerId(String id) {
+        return customerRepository.getCustomerByCustomerId(id);
+    }
+
+    public List<Customer> getCustomersByProductNumberAndCustomerId(String productNumber, String customerId) {
+       return customerRepository.getCustomersByProductNumberAndCustomerId(productNumber, customerId);
+    }
 }
