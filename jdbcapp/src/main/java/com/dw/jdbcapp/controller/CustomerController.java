@@ -25,8 +25,15 @@ public class CustomerController {
         return customerService.getCustomerByCustomerId(id);
     }
 
+    @GetMapping("/api/orders")
+    public List<Customer> getCustomersByProductNumberAndCustomerId2
+            (@RequestParam String productNumber, @RequestParam String customerId) {
+        return customerService.getCustomersByProductNumberAndCustomerId(productNumber, customerId);
+    }
+
     @GetMapping("/api/orders/{productNumber}/{customerId}")
-    public List<Customer> getCustomersByProductNumberAndCustomerId(@PathVariable String productNumber, @PathVariable String customerId) {
+    public List<Customer> getCustomersByProductNumberAndCustomerId
+            (@PathVariable String productNumber, @PathVariable String customerId) {
         return customerService.getCustomersByProductNumberAndCustomerId(productNumber, customerId);
     }
 }

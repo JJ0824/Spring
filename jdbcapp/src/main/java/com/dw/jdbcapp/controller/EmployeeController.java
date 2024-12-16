@@ -44,8 +44,15 @@ public class EmployeeController {
         return employeeService.getEmployeeById(id);
     }
 
+    @GetMapping("api/employees")
+    public List<Employee> getEmployeeByDepartmentNumberAndPosition2
+            (@RequestParam String departmentNumber, @RequestParam String position) {
+        return employeeService.getEmployeeByDepartmentNumberAndPosition(departmentNumber, position);
+    }
+
     @GetMapping("/api/employees/{departmentNumber}/{position}")
-    public List<Employee> getEmployeeByDepartmentNumberAndPosition(@PathVariable String departmentNumber,@PathVariable String position) {
+    public List<Employee> getEmployeeByDepartmentNumberAndPosition
+            (@PathVariable String departmentNumber, @PathVariable String position) {
         return employeeService.getEmployeeByDepartmentNumberAndPosition(departmentNumber, position);
     }
 }
