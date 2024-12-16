@@ -35,6 +35,7 @@ public class DepartmentController {
         return departmentService.updateDepartment(department);
     }
 
+    // 2024. 12. 16 - Q5. 제품테이블의 정보를 삭제하는 API
     @DeleteMapping("/delete/department/id/{id}")
     public String deleteDepartment(@PathVariable String id) {
         return "부서번호 : " + departmentService.deleteDepartment(id) + " 가 삭제되었습니다.";
