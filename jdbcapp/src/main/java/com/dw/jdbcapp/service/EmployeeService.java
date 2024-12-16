@@ -46,4 +46,9 @@ public class EmployeeService {
     public List<Employee> getEmployeeByDepartmentNumberAndPosition(String departmentNumber, String position) {
         return employeeRepository.getEmployeeByDepartmentNumberAndPosition(departmentNumber, position);
     }
+
+    // 3. 사원테이블에 사원 1명을 새로 추가하는 API
+    public Employee saveEmployee(Employee employee) {
+        return employeeRepository.saveEmployee(employee);
+    }
 }

@@ -66,4 +66,36 @@ public class OrderRepository {
         }
         return order;
     }
+
+    public List<Order> getOrdersOfCustomerByProductNumberAndCustomerId(String productNumber, String customerId) {
+        List<Order> orders = new ArrayList<>();
+        String query = "select 주문.* " +
+                        "from 고객 " +
+                        "inner join 주문 on 고객.고객번호 = 주문.고객번호 " +
+                        "inner join 주문세부 on 주문.주문번호 = 주문세부.주문번호 " +
+                        "where 주문세부.제품번호 = ? and 고객.고객번호 = ?";
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement pstmt = connection.prepareStatement(query);
+        ) {
+            pstmt.setString(1, productNumber);
+            pstmt.setString(2, customerId);
+            try(ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Order order = new Order();
+
+                    order.setOrderId(rs.getString("주문번호"));
+                    order.setCustomerId(rs.getString("고객번호"));
+                    order.setEmployeeId(rs.getString("사원번호"));
+                    order.setOrderDate(rs.getDate("주문일").toLocalDate());
+                    order.setRequestDate(rs.getDate("요청일").toLocalDate());
+                    order.setShippingDate(rs.getDate("발송일").toLocalDate());
+
+                    orders.add(order);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return orders;
+    }
 }

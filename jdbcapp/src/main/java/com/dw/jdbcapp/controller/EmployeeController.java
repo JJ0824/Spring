@@ -4,15 +4,13 @@ import com.dw.jdbcapp.dto.EmployeeDepartmentDTO;
 import com.dw.jdbcapp.model.Employee;
 import com.dw.jdbcapp.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/api")
 public class EmployeeController {
     @Autowired
     EmployeeService employeeService;
@@ -44,15 +42,21 @@ public class EmployeeController {
         return employeeService.getEmployeeById(id);
     }
 
-    @GetMapping("api/employees")
+    @GetMapping("/employees")
     public List<Employee> getEmployeeByDepartmentNumberAndPosition2
             (@RequestParam String departmentNumber, @RequestParam String position) {
         return employeeService.getEmployeeByDepartmentNumberAndPosition(departmentNumber, position);
     }
 
-    @GetMapping("/api/employees/{departmentNumber}/{position}")
+    @GetMapping("/employees/{departmentNumber}/{position}")
     public List<Employee> getEmployeeByDepartmentNumberAndPosition
             (@PathVariable String departmentNumber, @PathVariable String position) {
         return employeeService.getEmployeeByDepartmentNumberAndPosition(departmentNumber, position);
+    }
+
+    // 3. 사원테이블에 사원 1명을 새로 추가하는 API
+    @PostMapping("/post/employee")
+    public Employee saveEmployee(@RequestBody Employee employee) {
+        return employeeService.saveEmployee(employee);
     }
 }

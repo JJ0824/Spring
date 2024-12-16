@@ -110,6 +110,7 @@ public class EmployeeRepository {
         return employees;
     }
 
+
     public List<Employee> getEmployeeByDepartmentNumberAndPosition(String departmentNumber, String position) {
         List<Employee> employees = new ArrayList<>();
         String query = "select * from 사원 where (부서번호 = ?) and (직위 = ?)";
@@ -145,5 +146,35 @@ public class EmployeeRepository {
             e.printStackTrace();
         }
         return employees;
+    }
+
+    // 사원테이블에 사원을 새로 추가하는 API
+    public Employee saveEmployee(Employee employee) {
+        String query = "insert into 사원(사원번호, 이름, 영문이름, 직위, 성별, 생일, 입사일, "
+                + "주소, 도시, 지역, 집전화, 상사번호, 부서번호)"
+                + "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try(Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            PreparedStatement pstmt = connection.prepareStatement(query)) {
+
+            pstmt.setString(1, employee.getEmployeeId());
+            pstmt.setString(2, employee.getName());
+            pstmt.setString(3, employee.getEnglishName());
+            pstmt.setString(4, employee.getPosition());
+            pstmt.setString(5, employee.getGender());
+            pstmt.setDate(6, Date.valueOf(employee.getBirthDate()));
+            pstmt.setDate(7, Date.valueOf(employee.getHireDate()));
+            pstmt.setString(8, employee.getAddress());
+            pstmt.setString(9, employee.getCity());
+            pstmt.setString(10, employee.getRegion());
+            pstmt.setString(11, employee.getHomePhone());
+            pstmt.setString(12, employee.getSupervisorId());
+            pstmt.setString(13, employee.getDepartmentId());
+
+            pstmt.executeUpdate();
+            System.out.println("UPDATE 성공");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return employee;
     }
 }

@@ -19,4 +19,8 @@ public class OrderService {
     public Order getOrderByOrderNumber(String orderNumber) {
         return orderRepository.getOrderByOrderNumber(orderNumber);
     }
+
+    public List<Order> getOrdersOfCustomerByProductNumberAndCustomerId(String productNumber, String customerId) {
+        return orderRepository.getOrdersOfCustomerByProductNumberAndCustomerId(productNumber, customerId);
+    }
 }

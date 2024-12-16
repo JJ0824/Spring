@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api")
 public class DepartmentController {
     @Autowired
     DepartmentService departmentService;
@@ -32,5 +33,10 @@ public class DepartmentController {
     @PutMapping("/put/department")
     public Department updateDepartment(@RequestBody Department department) {
         return departmentService.updateDepartment(department);
+    }
+
+    @DeleteMapping("/delete/department/id/{id}")
+    public String deleteDepartment(@PathVariable String id) {
+        return "부서번호 : " + departmentService.deleteDepartment(id) + " 가 삭제되었습니다.";
     }
 }
