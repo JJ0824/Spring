@@ -2,8 +2,9 @@ package com.dw.jdbcapp.service;
 
 import com.dw.jdbcapp.dto.EmployeeDepartmentDTO;
 import com.dw.jdbcapp.model.Employee;
-import com.dw.jdbcapp.repository.EmployeeRepository;
+import com.dw.jdbcapp.repository.iface.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -14,6 +15,7 @@ import java.util.Map;
 @Service
 public class EmployeeService {
     @Autowired
+    @Qualifier("employeeTemplateRepository")
     EmployeeRepository employeeRepository;
 
     public List<Employee> getAllEmployees() {
@@ -24,15 +26,18 @@ public class EmployeeService {
         return employeeRepository.getEmployeeById(id);
     }
 
-    public List<Map<String, Object>> getEmployeesWithDepartName() {
+    public List<Map<String,Object>> getEmployeesWithDepartName() {
         return employeeRepository.getEmployeesWithDepartName();
     }
 
     public List<EmployeeDepartmentDTO> getEmployeesWithDepartName2() {
-        List<EmployeeDepartmentDTO> employeeDepartmentDTOList = new ArrayList<>();
-        List<Map<String, Object>> mapList = employeeRepository.getEmployeesWithDepartName();
+        List<EmployeeDepartmentDTO> employeeDepartmentDTOList =
+                new ArrayList<>();
 
-        for(Map<String, Object> data : mapList) {
+        List<Map<String,Object>> mapList =
+                employeeRepository.getEmployeesWithDepartName();
+
+        for(Map<String,Object> data : mapList) {
             EmployeeDepartmentDTO temp = new EmployeeDepartmentDTO(
                     LocalDate.parse((String)data.get("입사일")),
                     (String)data.get("부서명"),
@@ -43,11 +48,13 @@ public class EmployeeService {
         return employeeDepartmentDTOList;
     }
 
-    public List<Employee> getEmployeeByDepartmentNumberAndPosition(String departmentNumber, String position) {
-        return employeeRepository.getEmployeeByDepartmentNumberAndPosition(departmentNumber, position);
+    public List<Employee> getEmployeesWithDepartmentAndPosition(
+            String departmentNumber, String position
+    ) {
+        return employeeRepository.getEmployeesWithDepartmentAndPosition(
+                departmentNumber, position);
     }
 
-    // 3. 사원테이블에 사원 1명을 새로 추가하는 API
     public Employee saveEmployee(Employee employee) {
         return employeeRepository.saveEmployee(employee);
     }

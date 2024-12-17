@@ -1,23 +1,22 @@
 package com.dw.jdbcapp.controller;
 
 import com.dw.jdbcapp.model.MileGrade;
-import com.dw.jdbcapp.service.MileageService;
+import com.dw.jdbcapp.service.MileGradeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-public class MileageController {
+public class MileGradeController {
     @Autowired
-    MileageService mileageService;
+    MileGradeService mileGradeService;
 
     @GetMapping("/find-all-mileage")
-    public List<MileGrade> getAllMileageGrades() {
-        return mileageService.getAllMileageGrades();
+    public List<MileGrade> getAllMileages() {
+        return mileGradeService.getAllMileages();
     }
 }

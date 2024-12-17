@@ -44,16 +44,16 @@ public class EmployeeController {
 
     // 2024.12.13 - Q3. 부서번호와 직위를 기준으로 해당 부서에 근무하는 특정 직위의 사원 정보를 조회하는 API
     @GetMapping("/employees")
-    public List<Employee> getEmployeeByDepartmentNumberAndPosition2
+    public List<Employee> getEmployeesWithDepartmentAndPosition2
             (@RequestParam String departmentNumber, @RequestParam String position) {
-        return employeeService.getEmployeeByDepartmentNumberAndPosition(departmentNumber, position);
+        return employeeService.getEmployeesWithDepartmentAndPosition(departmentNumber, position);
     }
 
     // 2024.12.13 - Q3. 부서번호와 직위를 기준으로 해당 부서에 근무하는 특정 직위의 사원 정보를 조회하는 API
     @GetMapping("/employees/{departmentNumber}/{position}")
-    public List<Employee> getEmployeeByDepartmentNumberAndPosition
+    public List<Employee> getEmployeesWithDepartmentAndPosition
             (@PathVariable String departmentNumber, @PathVariable String position) {
-        return employeeService.getEmployeeByDepartmentNumberAndPosition(departmentNumber, position);
+        return employeeService.getEmployeesWithDepartmentAndPosition(departmentNumber, position);
     }
 
     // 2024.12.16 - Q3. 사원테이블에 사원 1명을 새로 추가하는 API

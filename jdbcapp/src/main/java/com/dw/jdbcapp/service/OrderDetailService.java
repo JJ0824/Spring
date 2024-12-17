@@ -1,8 +1,9 @@
 package com.dw.jdbcapp.service;
 
 import com.dw.jdbcapp.model.OrderDetail;
-import com.dw.jdbcapp.repository.OrderDetailRepository;
+import com.dw.jdbcapp.repository.iface.OrderDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 @Service
 public class OrderDetailService {
     @Autowired
+    @Qualifier("orderDetailTemplateRepository")
     OrderDetailRepository orderDetailRepository;
 
     public List<OrderDetail> getAllOrderDetails() {
