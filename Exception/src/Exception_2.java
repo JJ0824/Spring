@@ -18,5 +18,10 @@ public class Exception_2 {
         catch (RuntimeException e) {
             System.out.println("기타 예외 발생.. 하지만 난 처리했음");
         }
+        // 중요!! ****
+        // RuntimeException이나 Exception같은 부모예외클래스를 제일 위의
+        // catch문에 선언하면 안 됨
+        // 모든 종류의 예외가 부모예외클래스에서 먼저 처리되므로
+        // 그 아래 세부 예외처리는 실행될 수 없음!!!
     }
 }
