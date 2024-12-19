@@ -36,10 +36,10 @@ public class DepartmentTemplateRepository implements DepartmentRepository {
 
     @Override
     public Department saveDepartment(Department department) {
+        System.out.println(department);
         String query = "insert into 부서(부서번호,부서명) values(?,?)";
 
         jdbcTemplate.update(query,
-                departmentRowMapper,
                 department.getDepartmentId(),
                 department.getDepartmentName());
 
@@ -51,7 +51,6 @@ public class DepartmentTemplateRepository implements DepartmentRepository {
         String query = "update 부서 set 부서명 = ? where 부서번호 = ?";
 
         jdbcTemplate.update(query,
-                departmentRowMapper,
                 department.getDepartmentName(),
                 department.getDepartmentId());
 
@@ -62,7 +61,7 @@ public class DepartmentTemplateRepository implements DepartmentRepository {
     public String deleteDepartment(String id) {
         String query = "delete from 부서 where 부서번호 = ?";
 
-        jdbcTemplate.update(query, departmentRowMapper, id);
+        jdbcTemplate.update(query, id);
 
         return id;
     }

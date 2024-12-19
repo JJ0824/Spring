@@ -117,4 +117,30 @@ public class ProductJdbcRepository implements ProductRepository {
         }
         return id;
     }
+
+    @Override
+    public List<Product> getProductsBelowPrice(double price) {
+        String query = "select * from 제품 where 단가 < ?";
+        List<Product> products = new ArrayList<>();
+        try(Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+            PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setDouble(1, price);
+            try(ResultSet rs = pstmt.executeQuery()) {
+                while(rs.next()) {
+                    Product product = new Product();
+
+                    product.setProductId(rs.getInt("제품번호"));
+                    product.setProductName(rs.getString("제품명"));
+                    product.setPackageUnit(rs.getString("포장단위"));
+                    product.setUnitPrice(rs.getDouble("단가"));
+                    product.setStock(rs.getInt("재고"));
+
+                    products.add(product);
+                }
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return products;
+    }
 }

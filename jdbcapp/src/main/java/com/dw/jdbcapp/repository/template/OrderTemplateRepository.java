@@ -1,8 +1,10 @@
 package com.dw.jdbcapp.repository.template;
 
+import com.dw.jdbcapp.exception.ResourceNotFoundException;
 import com.dw.jdbcapp.model.Order;
 import com.dw.jdbcapp.repository.iface.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -43,7 +45,13 @@ public class OrderTemplateRepository implements OrderRepository {
     @Override
     public Order getOrderById(String orderNumber) {
         String query = "select * from 주문 where 주문번호 = ?";
-        return jdbcTemplate.queryForObject(query, orderRowMapper, orderNumber);
+        try {
+            return jdbcTemplate.queryForObject(query, orderRowMapper, orderNumber);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException(
+                    "주문번호가 올바르지 않습니다 : " + orderNumber
+            );
+        }
     }
 
     @Override

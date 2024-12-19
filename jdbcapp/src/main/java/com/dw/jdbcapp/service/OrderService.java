@@ -1,5 +1,6 @@
 package com.dw.jdbcapp.service;
 
+import com.dw.jdbcapp.exception.InvalidRequestException;
 import com.dw.jdbcapp.model.Order;
 import com.dw.jdbcapp.repository.iface.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,12 @@ public class OrderService {
     }
 
     public List<Order> getOrderByIdAndCustomer(int productNumber, String customerId) {
-        return orderRepository.getOrderByIdAndCustomer(productNumber, customerId);
+        List<Order> orderList = orderRepository.getOrderByIdAndCustomer(productNumber, customerId);
+        if(orderList.isEmpty()) {
+            throw new InvalidRequestException("주문정보가 확인되지 않습니다 : "
+                    + productNumber + ", " + customerId);
+        }else {
+            return orderList;
+        }
     }
 }

@@ -3,6 +3,8 @@ package com.dw.jdbcapp.controller;
 import com.dw.jdbcapp.model.MileGrade;
 import com.dw.jdbcapp.service.MileGradeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +18,8 @@ public class MileGradeController {
     MileGradeService mileGradeService;
 
     @GetMapping("/find-all-mileage")
-    public List<MileGrade> getAllMileages() {
-        return mileGradeService.getAllMileages();
+    public ResponseEntity<List<MileGrade>> getAllMileages() {
+        return new ResponseEntity<>(
+                mileGradeService.getAllMileages(), HttpStatus.OK);
     }
 }

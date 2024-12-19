@@ -1,9 +1,10 @@
 package com.dw.jdbcapp.repository.template;
 
+import com.dw.jdbcapp.exception.ResourceNotFoundException;
 import com.dw.jdbcapp.model.Employee;
 import com.dw.jdbcapp.repository.iface.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.ColumnMapRowMapper;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -52,7 +53,12 @@ public class EmployeeTemplateRepository implements EmployeeRepository {
     @Override
     public Employee getEmployeeById(String id) {
         String query = "select * from 사원 where 사원번호 = ?";
-        return jdbcTemplate.queryForObject(query, employeeRowMapper, id);
+        try {
+            return jdbcTemplate.queryForObject(query, employeeRowMapper, id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException(
+                    "사원번호가 올바르지 않습니다 : " + id);
+        }
     }
 
     @Override
