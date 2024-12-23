@@ -12,7 +12,9 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class OrderTemplateRepository implements OrderRepository {
@@ -59,5 +61,50 @@ public class OrderTemplateRepository implements OrderRepository {
         String query = "select * from 주문 where 고객번호 = ? and" +
                 " 주문번호 in (select 주문번호 from 주문세부 where 제품번호 = ?)";
         return jdbcTemplate.query(query, orderRowMapper, customerId, productNumber);
+    }
+
+    @Override
+    public int saveOrder(Order order) {
+        String query = "insert into 주문(주문번호,고객번호,사원번호,주문일,요청일) " +
+                "values(?,?,?,?,?)";
+        return jdbcTemplate.update(query,
+                order.getOrderId(),
+                order.getCustomerId(),
+                order.getEmployeeId(),
+                order.getOrderDate().toString(),
+                order.getRequestDate().toString());
+    }
+
+    @Override
+    public String updateOrderWithShippingDate(String id, String date) {
+        String query = "update 주문 set 발송일 = ? where 주문번호 = ?";
+        jdbcTemplate.update(query, date, id);
+        return "주문번호 : " + id + " 의 발송일이 " + date + "로 수정되었습니다.";
+    }
+
+    @Override
+    public List<Map<String, Object>> getTopCitiesByTotalOrderAmount(int limit) {
+        String query = "select 도시, sum(단가*주문수량) as 주문금액합 " +
+                "from 주문 " +
+                "inner join 고객 " +
+                "on 주문.고객번호 = 고객.고객번호 " +
+                "inner join 주문세부 " +
+                "on 주문.주문번호 = 주문세부.주문번호 " +
+                "group by 도시 " +
+                "order by 주문금액합 desc " +
+                "limit ?";
+
+        return jdbcTemplate.queryForList(query, limit);
+    }
+
+    @Override
+    public List<Map<String, Object>> getOrderCountByYearForCity(String city) {
+        String query = "select year(주문일) as 주문년도, " +
+                "count(*) as 주문건수 " +
+                "from 주문 " +
+                "where 고객번호 in (select 고객번호 from 고객 where 도시 = ?) " +
+                "group by 주문년도 " +
+                "order by 주문년도";
+        return jdbcTemplate.queryForList(query, city);
     }
 }

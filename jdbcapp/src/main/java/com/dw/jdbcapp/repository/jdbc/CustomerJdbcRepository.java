@@ -44,4 +44,69 @@ public class CustomerJdbcRepository implements CustomerRepository {
         }
         return customers;
     }
+
+    @Override
+    public List<Customer> getCustomersWithHighMileThanAvg() {
+        List<Customer> customers = new ArrayList<>();
+        String query = "select * from 고객 " +
+                "where 마일리지 > (select avg(마일리지) from 고객)";
+        try (
+                Connection conn = DriverManager.getConnection(
+                        URL, USER, PASSWORD);
+                Statement statement = conn.createStatement();
+                ResultSet rs = statement.executeQuery(query)) {
+            while(rs.next()) {
+                Customer customer = new Customer();
+
+                customer.setCustomerId(rs.getString("고객번호"));
+                customer.setCompanyName(rs.getString("고객회사명"));
+                customer.setContactName(rs.getString("담당자명"));
+                customer.setContactTitle(rs.getString("담당자직위"));
+                customer.setAddress(rs.getString("주소"));
+                customer.setCity(rs.getString("도시"));
+                customer.setRegion(rs.getString("지역"));
+                customer.setPhone(rs.getString("전화번호"));
+                customer.setMileage(rs.getInt("마일리지"));
+
+                customers.add(customer);
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return customers;
+    }
+
+    @Override
+    public List<Customer> getCustomersByMileageGrade(String grade) {
+        List<Customer> customers = new ArrayList<>();
+        String query = "select * from 고객 " +
+                "join 마일리지등급 on 고객.마일리지 >= 마일리지등급.하한마일리지 " +
+                "and 고객.마일리지 < 마일리지등급.상한마일리지 " +
+                "where 마일리지등급.등급명 = ? " +
+                "order by 고객.마일리지 desc";
+        try (
+            Connection conn = DriverManager.getConnection(
+                    URL, USER, PASSWORD);
+            Statement statement = conn.createStatement();
+            ResultSet rs = statement.executeQuery(query)) {
+            while (rs.next()) {
+                Customer customer = new Customer();
+
+                customer.setCustomerId(rs.getString("고객번호"));
+                customer.setCompanyName(rs.getString("고객회사명"));
+                customer.setContactName(rs.getString("담당자명"));
+                customer.setContactTitle(rs.getString("담당자직위"));
+                customer.setAddress(rs.getString("주소"));
+                customer.setCity(rs.getString("도시"));
+                customer.setRegion(rs.getString("지역"));
+                customer.setPhone(rs.getString("전화번호"));
+                customer.setMileage(rs.getInt("마일리지"));
+
+                customers.add(customer);
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return customers;
+    }
 }

@@ -17,4 +17,8 @@ public class OrderDetailService {
     public List<OrderDetail> getAllOrderDetails() {
         return orderDetailRepository.getAllOrderDetails();
     }
+
+    public int saveOrderDetail(OrderDetail orderDetail) {
+        return orderDetailRepository.saveOrderDetail(orderDetail);
+    }
 }

@@ -17,4 +17,12 @@ public class CustomerService {
     public List<Customer> getAllCustomers() {
         return customerRepository.getAllCustomers();
     }
+
+    public List<Customer> getCustomersWithHighMileThanAvg() {
+        return customerRepository.getCustomersWithHighMileThanAvg();
+    }
+
+    public List<Customer> getCustomersByMileageGrade(String grade) {
+        return customerRepository.getCustomersByMileageGrade(grade);
+    }
 }

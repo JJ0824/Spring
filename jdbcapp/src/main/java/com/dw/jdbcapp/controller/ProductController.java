@@ -1,5 +1,6 @@
 package com.dw.jdbcapp.controller;
 
+import com.dw.jdbcapp.dto.ProductDTO;
 import com.dw.jdbcapp.model.Product;
 import com.dw.jdbcapp.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,5 +63,23 @@ public class ProductController {
     public ResponseEntity<List<Product>> getProductsBelowPrice(@RequestParam double price_below) {
         return new ResponseEntity<>(
                 productService.getProductsBelowPrice(price_below), HttpStatus.ACCEPTED);
+    }
+
+    @PutMapping("/products/update")
+    public ResponseEntity<String> updateProductWithStock(@RequestParam int id,@RequestParam int stock) {
+        return new ResponseEntity<>(
+                productService.updateProductWithStock(id, stock), HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/products/name/{name}")
+    public ResponseEntity<List<Product>> getProductByProductName(@PathVariable String name) {
+        return new ResponseEntity<>(
+                productService.getProductByProductName(name), HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/products/stockvalue")
+    public ResponseEntity<List<ProductDTO>> getProductsByStockValue() {
+        return new ResponseEntity<>(
+                productService.getProductsByStockValue(), HttpStatus.ACCEPTED);
     }
 }

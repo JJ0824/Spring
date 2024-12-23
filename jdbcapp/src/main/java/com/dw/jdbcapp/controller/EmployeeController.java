@@ -73,4 +73,10 @@ public class EmployeeController {
         return new ResponseEntity<>(
                 employeeService.saveEmployee(employee), HttpStatus.ACCEPTED);
     }
+
+    @GetMapping("/employees/hireDate/{hireDate}")
+    public ResponseEntity<List<Employee>> getEmployeesByHireDate(@PathVariable String hireDate) {
+        return new ResponseEntity<>(
+                employeeService.getEmployeesByHireDate(hireDate), HttpStatus.ACCEPTED);
+    }
 }

@@ -8,6 +8,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class OrderJdbcRepository implements OrderRepository {
@@ -97,5 +98,27 @@ public class OrderJdbcRepository implements OrderRepository {
             e.printStackTrace();
         }
         return orders;
+    }
+
+    @Override
+    public int saveOrder(Order order) {
+        String query = "insert into 주문(주문번호,고객번호,사원번호,주문일,요청일) " +
+                "values(?,?,?,?,?)";
+        return 0;
+    }
+
+    @Override
+    public String updateOrderWithShippingDate(String id, String date) {
+        return "";
+    }
+
+    @Override
+    public List<Map<String, Object>> getTopCitiesByTotalOrderAmount(int limit) {
+        return List.of();
+    }
+
+    @Override
+    public List<Map<String, Object>> getOrderCountByYearForCity(String city) {
+        return List.of();
     }
 }

@@ -1,5 +1,6 @@
 package com.dw.jdbcapp.repository.template;
 
+import com.dw.jdbcapp.exception.InvalidRequestException;
 import com.dw.jdbcapp.exception.ResourceNotFoundException;
 import com.dw.jdbcapp.model.Employee;
 import com.dw.jdbcapp.repository.iface.EmployeeRepository;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,5 +115,16 @@ public class EmployeeTemplateRepository implements EmployeeRepository {
                 employee.getDepartmentId());
 
         return employee;
+    }
+
+    @Override
+    public List<Employee> getEmployeesByHireDate(String hireDate) {
+        String query = "select * from 사원 where 입사일 > ?";
+        return jdbcTemplate.query(query, employeeRowMapper, hireDate);
+    }
+
+    public List<Employee> getEmployeesByHireDate2() {
+        String query = "select * from 사원 order by 입사일 desc limit 1";
+        return jdbcTemplate.query(query, employeeRowMapper);
     }
 }

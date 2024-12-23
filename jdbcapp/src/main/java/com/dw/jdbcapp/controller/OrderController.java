@@ -1,5 +1,6 @@
 package com.dw.jdbcapp.controller;
 
+import com.dw.jdbcapp.dto.OrderRequestDTO;
 import com.dw.jdbcapp.model.Order;
 import com.dw.jdbcapp.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -53,5 +55,31 @@ public class OrderController {
         return new ResponseEntity<>(
                 orderService.getOrderByIdAndCustomer(productNumber, customerId),
                 HttpStatus.ACCEPTED);
+    }
+
+    @PostMapping("/post/orders")
+    public ResponseEntity<OrderRequestDTO> saveOrder(
+            @RequestBody OrderRequestDTO orderRequestDTO) {
+        return new ResponseEntity<>(
+                orderService.saveOrder(orderRequestDTO),
+                HttpStatus.CREATED);
+    }
+
+    @PutMapping("/orders/update")
+    public ResponseEntity<String> updateOrderWithShippingDate(@RequestParam String id,@RequestParam String date) {
+        return new ResponseEntity<>(
+                orderService.updateOrderWithShippingDate(id, date), HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/orders/city/orderamount/{limit}")
+    public ResponseEntity<List<Map<String,Integer>>> getTopCitiesByTotalOrderAmount(@PathVariable int limit) {
+        return new ResponseEntity<>(
+                orderService.getTopCitiesByTotalOrderAmount(limit), HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/orders/ordercount/year/{city}")
+    public ResponseEntity<List<Map<String, Double>>> getOrderCountByYearForCity(@PathVariable String city) {
+        return new ResponseEntity<>(
+                orderService.getOrderCountByYearForCity(city), HttpStatus.ACCEPTED);
     }
 }

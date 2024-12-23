@@ -40,4 +40,11 @@ public class OrderDetailJdbcRepository implements OrderDetailRepository {
         }
         return orderDetails;
     }
+
+    @Override
+    public int saveOrderDetail(OrderDetail orderDetail) {
+        String query = "insert into 주문세부(주문번호,제품번호,단가,주문수량,할인율) " +
+                "values(?,?,?,?,?)";
+        return 0;
+    }
 }

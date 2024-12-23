@@ -11,4 +11,6 @@ public interface EmployeeRepository {
     List<Map<String,Object>> getEmployeesWithDepartName();
     List<Employee> getEmployeesWithDepartmentAndPosition(String departmentNumber, String position);
     Employee saveEmployee(Employee employee);
+    List<Employee> getEmployeesByHireDate(String hireDate);
+    List<Employee> getEmployeesByHireDate2();
 }
