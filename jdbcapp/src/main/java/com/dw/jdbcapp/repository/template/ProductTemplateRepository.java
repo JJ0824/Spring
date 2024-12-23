@@ -99,7 +99,7 @@ public class ProductTemplateRepository implements ProductRepository {
     public String updateProductWithStock(int id, int stock) {
         String query = "update 제품 set 재고 = ? where 제품번호 = ?";
         jdbcTemplate.update(query, id, stock);
-        return "제품번호 : " + id +"의 재고가 " + stock + "개로 수정되었습니다.";
+        return "제품번호 : " + id + "의 재고가 " + stock + "개로 수정되었습니다.";
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.dw.jdbcapp.model.OrderDetail;
 import com.dw.jdbcapp.model.Product;
 import com.dw.jdbcapp.repository.iface.OrderDetailRepository;
 import com.dw.jdbcapp.repository.iface.OrderRepository;
+import com.dw.jdbcapp.repository.iface.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,10 @@ public class OrderService {
     @Autowired
     @Qualifier("orderTemplateRepository")
     OrderRepository orderRepository;
+
+    @Autowired
+    @Qualifier("productTemplateRepository")
+    ProductRepository productRepository;
 
     @Autowired
     @Qualifier("orderDetailTemplateRepository")
@@ -47,14 +52,15 @@ public class OrderService {
     public OrderRequestDTO saveOrder(OrderRequestDTO orderRequestDTO) {
         // 1. DTO에서 주문정보를 꺼내 주문 테이블에 insert
         orderRepository.saveOrder(orderRequestDTO.toOrder());
-        Product product = new Product();
         // 2. DTO에서 주문세부정보를 꺼내 주문세부테이블에 insert. 반복문 필요
         for (OrderDetail data : orderRequestDTO.getOrderDetails()) {
+            Product product = productRepository.getProductById(data.getProductId());
+
             if (data.getOrderQuantity()>product.getStock()) {
                 throw new InvalidRequestException(
                         "요청하신 수량은 현재 재고를 초과합니다: " + product.getStock()
                 );
-            }else {
+            }else { //
                 orderDetailRepository.saveOrderDetail(data);
             }
         }
