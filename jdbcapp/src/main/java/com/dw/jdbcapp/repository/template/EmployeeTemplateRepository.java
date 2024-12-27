@@ -117,12 +117,14 @@ public class EmployeeTemplateRepository implements EmployeeRepository {
         return employee;
     }
 
+    // 12. 20 - Q3. 입사일을 매개변수로 입사한 사원들을 조회하는 API
     @Override
     public List<Employee> getEmployeesByHireDate(String hireDate) {
         String query = "select * from 사원 where 입사일 > ?";
         return jdbcTemplate.query(query, employeeRowMapper, hireDate);
     }
 
+    // 12.20 - Q3 - 2. 입사일을 매개변수로 입사한 사원들을 조회하는 API
     public List<Employee> getEmployeesByHireDate2() {
         String query = "select * from 사원 order by 입사일 desc limit 1";
         return jdbcTemplate.query(query, employeeRowMapper);

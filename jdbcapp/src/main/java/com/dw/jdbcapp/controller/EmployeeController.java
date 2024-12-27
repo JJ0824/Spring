@@ -49,7 +49,7 @@ public class EmployeeController {
                 employeeService.getEmployeeById(id), HttpStatus.ACCEPTED);
     }
 
-    // 2024.12.13 - Q3. 부서번호와 직위를 기준으로 해당 부서에 근무하는 특정 직위의 사원 정보를 조회하는 API
+    // 12. 13 - Q3. 부서번호와 직위를 기준으로 해당 부서에 근무하는 특정 직위의 사원 정보를 조회하는 API
     @GetMapping("/employees")
     public ResponseEntity<List<Employee>> getEmployeesWithDepartmentAndPosition2
             (@RequestParam String departmentNumber, @RequestParam String position) {
@@ -58,7 +58,7 @@ public class EmployeeController {
                 HttpStatus.OK);
     }
 
-    // 2024.12.13 - Q3. 부서번호와 직위를 기준으로 해당 부서에 근무하는 특정 직위의 사원 정보를 조회하는 API
+    // 12. 13 - Q3. 부서번호와 직위를 기준으로 해당 부서에 근무하는 특정 직위의 사원 정보를 조회하는 API
     @GetMapping("/employees/{departmentNumber}/{position}")
     public ResponseEntity<List<Employee>> getEmployeesWithDepartmentAndPosition
             (@PathVariable String departmentNumber, @PathVariable String position) {
@@ -67,13 +67,15 @@ public class EmployeeController {
                 HttpStatus.OK);
     }
 
-    // 2024.12.16 - Q3. 사원테이블에 사원 1명을 새로 추가하는 API
+    // 12. 16 - Q3. 사원테이블에 사원 1명을 새로 추가하는 API
     @PostMapping("/post/employee")
     public ResponseEntity<Employee> saveEmployee(@RequestBody Employee employee) {
         return new ResponseEntity<>(
                 employeeService.saveEmployee(employee), HttpStatus.ACCEPTED);
     }
 
+    // 12. 20 - Q3. 입사일을 매개변수로 입사한 사원들을 조회하는 API
+    // hireDate를 0으로 입력 시 가장 최근 입사한 사원들의 정보를 조회
     @GetMapping("/employees/hireDate/{hireDate}")
     public ResponseEntity<List<Employee>> getEmployeesByHireDate(@PathVariable String hireDate) {
         return new ResponseEntity<>(

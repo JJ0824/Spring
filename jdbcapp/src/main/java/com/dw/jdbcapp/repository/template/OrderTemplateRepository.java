@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -75,6 +76,7 @@ public class OrderTemplateRepository implements OrderRepository {
                 order.getRequestDate().toString());
     }
 
+    // 12. 20 - Q4 주문번호와 발송일을 매개변수로 해당 주문의 발송일을 수정하는 API
     @Override
     public String updateOrderWithShippingDate(String id, String date) {
         String query = "update 주문 set 발송일 = ? where 주문번호 = ?";
@@ -82,6 +84,7 @@ public class OrderTemplateRepository implements OrderRepository {
         return "주문번호 : " + id + " 의 발송일이 " + date + "로 수정되었습니다.";
     }
 
+    // 12. 20 - Q5 도시별로 주문금액합 결과를 내림차순 정렬하여 조회하는 API
     @Override
     public List<Map<String, Object>> getTopCitiesByTotalOrderAmount(int limit) {
         String query = "select 도시, sum(단가*주문수량) as 주문금액합 " +
@@ -93,10 +96,16 @@ public class OrderTemplateRepository implements OrderRepository {
                 "group by 도시 " +
                 "order by 주문금액합 desc " +
                 "limit ?";
-
+//        return jdbcTemplate.query(query, (rs, rowNum) -> {
+//            Map<String, Double> map = new HashMap<>();
+//            map.put(rs.getString("도시"),
+//                    rs.getDouble("금액합"));
+//            return map;
+//        }, limit);
         return jdbcTemplate.queryForList(query, limit);
     }
 
+    // 12. 21 - Q6 도시를 매개변수로 해당 도시의 년도별 주문건수를 조회하는 API
     @Override
     public List<Map<String, Object>> getOrderCountByYearForCity(String city) {
         String query = "select year(주문일) as 주문년도, " +
@@ -106,5 +115,25 @@ public class OrderTemplateRepository implements OrderRepository {
                 "group by 주문년도 " +
                 "order by 주문년도";
         return jdbcTemplate.queryForList(query, city);
+    }
+
+    // 12. 20 - Q5 도시별로 주문금액합 결과를 내림차순 정렬하여 조회하는 API
+    // 람다식 사용
+    public List<Map<String, Double>> getTopCitiesByTotalOrderAmount2(int limit) {
+        String query = "select 도시, sum(단가*주문수량) as 주문금액합 " +
+                "from 주문 " +
+                "inner join 고객 " +
+                "on 주문.고객번호 = 고객.고객번호 " +
+                "inner join 주문세부 " +
+                "on 주문.주문번호 = 주문세부.주문번호 " +
+                "group by 도시 " +
+                "order by 주문금액합 desc " +
+                "limit ?";
+        return jdbcTemplate.query(query, (rs, rowNum) -> {
+            Map<String, Double> map = new HashMap<>();
+            map.put(rs.getString("도시"),
+                    rs.getDouble("금액합"));
+            return map;
+        }, limit);
     }
 }

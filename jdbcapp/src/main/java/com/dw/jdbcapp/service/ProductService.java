@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.dw.jdbcapp.dto.ProductDTO.fromProduct;
+
 @Service
 public class ProductService {
     @Autowired
@@ -66,19 +68,13 @@ public class ProductService {
         return productRepository.getProductByProductName(name);
     }
 
+    // 12. 20 - Q10 ProductDTO를 아래 형식으로 추가하고 조회하는 API
     public List<ProductDTO> getProductsByStockValue() {
         List<Product> products = productRepository.getProductsByStockValue();
         List<ProductDTO> productDTOList = new ArrayList<>();
         for (Product product : products) {
-            ProductDTO productDTO = new ProductDTO();
-
-            productDTO.setProductId(product.getProductId());
-            productDTO.setProductName(product.getProductName());
-            productDTO.setStock(product.getStock());
-            productDTO.setUnitPrice(product.getUnitPrice());
-            productDTO.setStockValue(product.getStock(), product.getUnitPrice());
-
-            productDTOList.add(productDTO);
+//            productDTOList.add(fromProduct(product));
+            productDTOList.add(new ProductDTO(product));
         }
         return productDTOList;
     }

@@ -41,7 +41,7 @@ public class DepartmentController {
                 HttpStatus.OK);
     }
 
-    // 2024. 12. 16 - Q5. 제품테이블의 정보를 삭제하는 API
+    // 12. 16 - Q5. 제품테이블의 정보를 삭제하는 API
     @DeleteMapping("/delete/department/id/{id}")
     public ResponseEntity<String> deleteDepartment(@PathVariable String id) {
         return new ResponseEntity<>(

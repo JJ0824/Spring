@@ -3,21 +3,29 @@ package com.dw.jdbcapp.dto;
 import com.dw.jdbcapp.model.Product;
 
 public class ProductDTO {
-    int productId;
-    String productName;
-    double unitPrice;
-    int stock;
-    double stockValue;
+    private int productId;
+    private String productName;
+    private double unitPrice;
+    private int stock;
+    private double stockValue;
 
     public ProductDTO() {
     }
 
-    public ProductDTO(int productId, String productName, double unitPrice, int stock, double stockValue) {
+    public ProductDTO(int productId, String productName, double unitPrice, int stock) {
         this.productId = productId;
         this.productName = productName;
         this.unitPrice = unitPrice;
         this.stock = stock;
-        this.stockValue = stockValue;
+    }
+
+    // 아래 fromProduct()와 동일한 기능을 가진 생성자를 만들 수 있음
+    public ProductDTO(Product product) {
+        this.productId = product.getProductId();
+        this.productName = product.getProductName();
+        this.unitPrice = product.getUnitPrice();
+        this.stock = product.getStock();
+        this.stockValue = product.getUnitPrice() * product.getStock();
     }
 
     public int getProductId() {
@@ -56,8 +64,8 @@ public class ProductDTO {
         return stockValue;
     }
 
-    public void setStockValue(int stock, double unitPrice) {
-        this.stockValue = (double) stock * unitPrice;
+    public void setStockValue(double stockValue) {
+        this.stockValue = stockValue;
     }
 
     public Product toProduct() {
@@ -68,5 +76,17 @@ public class ProductDTO {
         product.setStock(this.stock);
 
         return product;
+    }
+
+    public static ProductDTO fromProduct(Product product) {
+        ProductDTO productDTO = new ProductDTO();
+
+        productDTO.setProductId(product.getProductId());
+        productDTO.setProductName(product.getProductName());
+        productDTO.setUnitPrice(product.getUnitPrice());
+        productDTO.setStock(product.getStock());
+        productDTO.setStockValue(product.getUnitPrice() * product.getStock());
+
+        return productDTO;
     }
 }

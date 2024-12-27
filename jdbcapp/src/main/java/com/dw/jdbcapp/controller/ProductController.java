@@ -60,23 +60,30 @@ public class ProductController {
 
     // 2024.12.19 - Q5. 제품을 조회할 때 단가를 매개변수로 전달하고 해당 단가보다 싼 제품을 조회하는 API
     @GetMapping("/product")
-    public ResponseEntity<List<Product>> getProductsBelowPrice(@RequestParam double price_below) {
+    public ResponseEntity<List<Product>> getProductsBelowPrice(
+            @RequestParam double price_below) {
         return new ResponseEntity<>(
                 productService.getProductsBelowPrice(price_below), HttpStatus.ACCEPTED);
     }
 
+    // 12. 20 - Q8 제품번호와 재고를 매개변수로 해당 제품의 재고를 수정하는 API
     @PutMapping("/products/update")
-    public ResponseEntity<String> updateProductWithStock(@RequestParam int id,@RequestParam int stock) {
+    public ResponseEntity<String> updateProductWithStock(
+            @RequestParam int id,@RequestParam int stock) {
         return new ResponseEntity<>(
-                productService.updateProductWithStock(id, stock), HttpStatus.ACCEPTED);
+                productService.updateProductWithStock(id, stock),
+                HttpStatus.ACCEPTED);
     }
 
+    // 12. 20 - Q9 제품명의 일부를 매개변수로 해당 문자열을 포함하는 제품들을 조회하는 API
     @GetMapping("/products/name/{name}")
-    public ResponseEntity<List<Product>> getProductByProductName(@PathVariable String name) {
+    public ResponseEntity<List<Product>> getProductByProductName(
+            @PathVariable String name) {
         return new ResponseEntity<>(
                 productService.getProductByProductName(name), HttpStatus.ACCEPTED);
     }
 
+    // 12. 20 - Q10 ProductDTO를 아래 형식으로 추가하고 조회하는 API
     @GetMapping("/products/stockvalue")
     public ResponseEntity<List<ProductDTO>> getProductsByStockValue() {
         return new ResponseEntity<>(

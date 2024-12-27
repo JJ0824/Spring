@@ -54,7 +54,8 @@ public class EmployeeService {
     public List<Employee> getEmployeesWithDepartmentAndPosition(
             String departmentNumber, String position
     ) {
-        List<Employee> employees = employeeRepository.getEmployeesWithDepartmentAndPosition(departmentNumber,position);
+        List<Employee> employees = employeeRepository.
+                getEmployeesWithDepartmentAndPosition(departmentNumber,position);
         if (employees.isEmpty()) {
             throw new ResourceNotFoundException("존재하지 않는 사원 : "
                     + departmentNumber + ", " + position);
@@ -62,33 +63,33 @@ public class EmployeeService {
             return employeeRepository.getEmployeesWithDepartmentAndPosition(
                     departmentNumber, position);
         }
-//        if (departmentNumber.toCharArray()[0]!='E'||!position.equals("사원")||!position.equals("대표이사")||
-//                !position.equals("대리")||!position.equals("전산팀장")||!position.equals("수습사원")||
-//                !position.equals("과장")||!position.equals("부장")||!position.equals("CEO")||
-//                !position.equals("사장")||!position.equals("회장")) {
-//            throw new ResourceNotFoundException("존재하지 않는 사원 : "
-//                    + departmentNumber + ", " + position);
-//        }else {
-//            return employeeRepository.getEmployeesWithDepartmentAndPosition(
-//                    departmentNumber, position);
-//        }
     }
 
     public Employee saveEmployee(Employee employee) {
         return employeeRepository.saveEmployee(employee);
     }
 
+    // 12.20 - Q3. 입사일을 매개변수로 입사한 사원들을 조회하는 API
     public List<Employee> getEmployeesByHireDate(String hireDate) {
-        if (hireDate.equals("0")) {
-            return employeeRepository.getEmployeesByHireDate2();
-        }else {
-            try {
+        if (hireDate==null|| hireDate.isEmpty()) {
+            throw new InvalidRequestException("입력된 값이 없습니다.");
+            // 12.20 - Q3 - 3. 입사일을 매개변수로 입사한 사원들을 조회하는 API
+            // 예외처리(0도 아니고, LocalDate 형태도 아님 => 예외
+        }
+        try {
+            if (hireDate.equals("0")) {
+                // 12.20 - Q3 - 2. 입사일을 매개변수로 입사한 사원들을 조회하는 API
+                // hireDate를 0으로 입력 시 가장 최근 입사한 사원들의 정보를 조회
+                return employeeRepository.getEmployeesByHireDate2();
+            } else {
                 LocalDate LDHireDate = LocalDate.parse(hireDate);
 
+                // 12.20 - Q3 - 1. 입사일을 매개변수로 입사한 사원들을 조회하는 API
                 return employeeRepository.getEmployeesByHireDate(LDHireDate.toString());
-            } catch (DateTimeException e) {
-                throw new InvalidRequestException("올바르지 않은 입사일을 입력하였습니다 : " + hireDate);
             }
+        } catch (DateTimeException e) {
+            // 예외처리(0도 아니고, LocalDate 형태도 아님 => 예외
+            throw new InvalidRequestException("올바르지 않은 입사일을 입력하였습니다 : " + hireDate);
         }
     }
 }

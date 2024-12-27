@@ -45,6 +45,7 @@ public class CustomerJdbcRepository implements CustomerRepository {
         return customers;
     }
 
+    // 과제 4-1 전체 평균마일리지보다 큰 마일리지를 가진 고객들을 조회하는 API
     @Override
     public List<Customer> getCustomersWithHighMileThanAvg() {
         List<Customer> customers = new ArrayList<>();
@@ -76,6 +77,7 @@ public class CustomerJdbcRepository implements CustomerRepository {
         return customers;
     }
 
+    // 과제 4-2 마일리지등급을 매개변수로 해당 마일리지 등급을 가진 고객들을 조회하는 API
     @Override
     public List<Customer> getCustomersByMileageGrade(String grade) {
         List<Customer> customers = new ArrayList<>();
